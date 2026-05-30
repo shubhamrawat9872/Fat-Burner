@@ -1,0 +1,64 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Stores core identity, physical details, activity, goals, and setup preferences.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Display name of the user" },
+        "age": { "type": "number", "description": "Age of the user in years" },
+        "weight": { "type": "number", "description": "Current body weight in kilograms" },
+        "height": { "type": "number", "description": "Height in centimeters" },
+        "gender": { "type": "string", "enum": ["male", "female"], "description": "Biological sex" },
+        "activityLevel": { "type": "string", "enum": ["sedentary", "light", "moderate", "active"], "description": "Physical activity multiplier index" },
+        "goal": { "type": "string", "enum": ["lose", "maintain", "gain"], "description": "Weight goal descriptor" },
+        "targetWeight": { "type": "number", "description": "Target weight in kilograms" },
+        "photoURL": { "type": "string", "description": "Profile picture URL references" },
+        "dailyCalorieTarget": { "type": "number", "description": "Target intake in calories per day" },
+        "dailyWaterTarget": { "type": "number", "description": "Water target in milliliters per day" },
+        "dailyStepsTarget": { "type": "number", "description": "Steps tracker baseline" }
+      },
+      "required": ["name", "age", "weight", "height", "gender", "activityLevel", "goal"]
+    },
+    "DailyLog": {
+      "title": "DailyLog",
+      "description": "Composite container for a specific day's meal list, exercise list, water, and summary tallies.",
+      "type": "object",
+      "properties": {
+        "waterIntake": { "type": "number", "description": "Milliliters consumed" },
+        "totalCaloriesIn": { "type": "number", "description": "Computed aggregate input calories" },
+        "totalCaloriesBurned": { "type": "number", "description": "Computed aggregate exercise expenditure" },
+        "netCalories": { "type": "number", "description": "Calories in minus calories burned" },
+        "fatBurnedGrams": { "type": "number", "description": "Calculated total fat metabolized in grams" },
+        "meals": { "type": "array", "description": "List of Meal objects" },
+        "exercises": { "type": "array", "description": "List of Exercise items logged" }
+      },
+      "required": ["waterIntake", "totalCaloriesIn", "totalCaloriesBurned", "netCalories", "fatBurnedGrams"]
+    },
+    "ProgressEntry": {
+      "title": "ProgressEntry",
+      "description": "Daily metrics tracking body metrics snapshot over time.",
+      "type": "object",
+      "properties": {
+        "weight": { "type": "number", "description": "Weight logged on this day" },
+        "bodyFatPercent": { "type": "number", "description": "Body fat percentage optionally recorded" },
+        "notes": { "type": "string", "description": "Personal reflection or symptoms logged" }
+      },
+      "required": ["weight"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Primary profile record for each authenticated user containing customized goals."
+    },
+    "/users/{userId}/dailyLogs/{dateKey}": {
+      "schema": "DailyLog",
+      "description": "Subcollection storing full active statistics for a localized YYYY-MM-DD day index."
+    },
+    "/users/{userId}/progress/{dateKey}": {
+      "schema": "ProgressEntry",
+      "description": "Subcollection logging time-series physical weights for progress graphing."
+    }
+  }
+}

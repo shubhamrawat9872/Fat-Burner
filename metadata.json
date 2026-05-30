@@ -1,0 +1,6 @@
+{
+  "name": "Calories & Fat Burn Tracker",
+  "description": "A high-fidelity mobile-simulator Calories and Fat Burn Tracker containing full logging, barcode scanning, visual trends, and Firebase persistent storage.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
